@@ -17,7 +17,7 @@ using namespace std;
 //#define bufferSize 637876 //  for the whole
 //#define bufferSize 4423 //  for the first 100000 lines
 //#define bufferSize (43305) //  for the first 1000000 lines
-#define bufferSize (2056081) //  for the first 10000000 lines
+#define bufferSize (205608) //  for the first 10000000 lines
 
 int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cacheMiss,stringstream &cacheS,long groundItem,long timeStep){
     string iter;
