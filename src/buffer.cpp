@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include "../include/buffer.h"
 
 
 int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cacheMiss,stringstream &cacheS,long groundItem,long timeStep){
@@ -10,11 +10,11 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
     if(cacheItem){
         if(cacheBuffer.count(groundItem)){
             cacheHit++;
-            cacheBuffer[groundItem] = timeStep;
+	    cacheBuffer[groundItem] = timeStep;
         } else {
             cacheMiss++;
             triggerPrefetcher=1;
-            if(cacheBuffer.size()<=CbufferSize) {
+            if(cacheBuffer.size()<=bufferSize){
                 cacheBuffer[groundItem] = timeStep;
             }
             else{
@@ -59,9 +59,9 @@ void handlePrefetch(unordered_map<long,long> &prefetchBuffer,long &prefetchHit, 
         if(prefetchItem!=0){
             //        if (prefetchBuffer.find(prefetchItem) != prefetchBuffer.end()) {
             if(prefetchBuffer.count(prefetchItem)){
-                prefetchBuffer[prefetchItem] = timeStep;
+                //prefetchBuffer[prefetchItem] = timeStep;
             } else {
-                if(prefetchBuffer.size()<=PbufferSize) {
+                if(prefetchBuffer.size()<=bufferSize) {
                     prefetchBuffer[prefetchItem] = timeStep;
                 }
                 else{
@@ -90,7 +90,7 @@ int handleFIFO(unordered_map<long,long> &cacheBuffer,unordered_map<long,long> &p
     } else {
         cacheMiss++;
         triggerPrefetcher=1;
-        if(cacheBuffer.size()<=CbufferSize) {
+        if(cacheBuffer.size()<=bufferSize) {
             cacheBuffer[groundItem] = timeStep;
         }else{
             long minTime=indiceNum;
@@ -118,7 +118,7 @@ int handleLRU(unordered_map<long,long> &cacheBuffer,unordered_map<long,long> &pr
         cacheHit++;
         return 0;
     } else {
-        if(cacheBuffer.size()<=CbufferSize) { // if the cache is not full
+        if(cacheBuffer.size()<=bufferSize) { // if the cache is not full
             cacheBuffer[groundItem] = timeStep;
         }
         else{   // if the cache is full
@@ -147,7 +147,7 @@ void handleGTandPrefetch(unordered_map<long,long> &prefetchBuffer,long &prefetch
         prefetchHit++;
     } else{
         prefetchMiss++;
-        if(prefetchBuffer.size()<=CbufferSize) { // if the cache is not full
+        if(prefetchBuffer.size()<=bufferSize) { // if the cache is not full
             prefetchBuffer[groundItem] = timeStep;
         }else{
             long minTime=indiceNum;

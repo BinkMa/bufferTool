@@ -38,7 +38,7 @@ void run_method2(FILE *fin1, FILE *fin2, FILE *fin3){
         long groundItem = stol(iter);
         int triggerPrefetch=handleCache(cacheBuffer,cacheHit,cacheMiss,cacheS,groundItem,timeStep);
         //handle prefetch
-        handlePrefetch(prefetchBuffer,prefetchHit,prefetchMiss,prefetchS,groundItem,timeStep,triggerPrefetch);
+        //handlePrefetch(prefetchBuffer,prefetchHit,prefetchMiss,prefetchS,groundItem,timeStep,triggerPrefetch);
         timeStep++;
     }
     cout<<"cacheHit: "<<cacheHit<<endl;
@@ -106,7 +106,7 @@ void run_method4(FILE *fin1, FILE *fin2, FILE *fin3){
         //get ground truth number
         indicesS>>iter;
         long groundItem = stol(iter);
-        int triggerPrefetch=handleFIFO(cacheBuffer,prefetchBuffer,cacheHit,cacheMiss,groundItem,timeStep);
+        int triggerPrefetch=handleLRU(cacheBuffer,prefetchBuffer,cacheHit,cacheMiss,groundItem,timeStep);
         //handle prefetch
         if(triggerPrefetch){
             handlePrefetch(prefetchBuffer,prefetchHit,prefetchMiss,prefetchS,groundItem,timeStep,triggerPrefetch);
@@ -171,8 +171,10 @@ int main(int argc,char* argv[]){
     fstream fin1,fin2,fin3;
     FILE *fp1,*fp2,*fp3;
 
-    char const* indiceFile="../datasets/indices.txt";
+   // char const* indiceFile="../datasets3/indicestest.txt";
+   char const* indiceFile="../datasets/indices.txt";
     char const* cacheFile="../datasets/fbgemm_t856_bs65536_15_cache_opt_trace.txt";
+    //char const* cacheFile ="../datasets3/dataset_0_sampled_5_0_cached_trace_opt.txt";
     char const* prefetchFile="../datasets/fbgemm_t856_bs65536_15_prefetch_trace.txt";
 
     fp1 = fopen(indiceFile, "r");

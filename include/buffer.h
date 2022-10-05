@@ -24,8 +24,9 @@
 //#define bufferSize 637876 //  for the whole
 //#define bufferSize 4423 //  for the first 100000 lines
 //#define bufferSize (43305) //  for the first 1000000 lines
-#define CbufferSize (86610) //  for the first 1000000 lines
-#define PbufferSize (43305) //  for the first 1000000 lines
+// #define CbufferSize (86610) //  for the first 1000000 lines
+// #define PbufferSize (43305) //  for the first 1000000 lines
+#define bufferSize (90947)//this is for test data 1000 000 lines
 //#define bufferSize (70985)  //
 //#define bufferSize (205608) //
 //#define bufferSize 10

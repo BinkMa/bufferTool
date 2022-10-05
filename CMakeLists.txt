@@ -4,6 +4,6 @@ project(bufferTool)
 set(CMAKE_CXX_STANDARD 11)
 
 
-INCLUDE_DIRECTORIES(../include/)
+INCLUDE_DIRECTORIES(include/)
 
-add_executable(bufferTool src/main.cpp)
+add_executable(bufferTool src/main.cpp src/buffer.cpp )
