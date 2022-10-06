@@ -10,7 +10,6 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
     if(cacheItem){
         if(cacheBuffer.count(groundItem)){
             cacheHit++;
-	    cacheBuffer[groundItem] = timeStep;
         } else {
             cacheMiss++;
             triggerPrefetcher=1;
@@ -27,8 +26,8 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
                     }
                 }
                 cacheBuffer.erase(minIndex);
-                cacheBuffer[groundItem]=timeStep;
             }
+            cacheBuffer[groundItem] = timeStep;
         }
     } else{
         if(cacheBuffer.count(groundItem)){
@@ -38,6 +37,7 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
             cacheMiss++;
             triggerPrefetcher=1;
         }
+        cacheBuffer[groundItem]=timeStep-2*bufferSize;
     }
     return triggerPrefetcher;
 }
