@@ -13,10 +13,7 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
         } else {
             cacheMiss++;
             triggerPrefetcher=1;
-            if(cacheBuffer.size()<=bufferSize){
-                cacheBuffer[groundItem] = timeStep;
-            }
-            else{
+            if(cacheBuffer.size()>=bufferSize){
                 long minTime=indiceNum;
                 long minIndex=0;
                 for(auto it:cacheBuffer){
@@ -27,7 +24,7 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
                 }
                 cacheBuffer.erase(minIndex);
             }
-            cacheBuffer[groundItem] = timeStep;
+            cacheBuffer[groundItem]=timeStep;
         }
     } else{
         if(cacheBuffer.count(groundItem)){
@@ -36,8 +33,19 @@ int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cach
         }else{
             cacheMiss++;
             triggerPrefetcher=1;
+            if(cacheBuffer.size()>=bufferSize){
+                long minTime=indiceNum;
+                long minIndex=0;
+                for(auto it:cacheBuffer){
+                    if(it.second<minTime){
+                        minTime=it.second;
+                        minIndex=it.first;
+                    }
+                }
+                cacheBuffer.erase(minIndex);
+            }
+            cacheBuffer[groundItem]=timeStep-1*bufferSize;
         }
-        cacheBuffer[groundItem]=timeStep-2*bufferSize;
     }
     return triggerPrefetcher;
 }
@@ -57,9 +65,9 @@ void handlePrefetch(unordered_map<long,long> &prefetchBuffer,long &prefetchHit, 
         prefetchS>>iter;
         prefetchItem=stol(iter);
         if(prefetchItem!=0){
-            //        if (prefetchBuffer.find(prefetchItem) != prefetchBuffer.end()) {
-            if(prefetchBuffer.count(prefetchItem)){
-                //prefetchBuffer[prefetchItem] = timeStep;
+                  if (prefetchBuffer.find(prefetchItem) != prefetchBuffer.end()) {
+           // if(prefetchBuffer.count(prefetchItem)){
+                prefetchBuffer[prefetchItem] = timeStep;
             } else {
                 if(prefetchBuffer.size()<=bufferSize) {
                     prefetchBuffer[prefetchItem] = timeStep;
@@ -82,33 +90,6 @@ void handlePrefetch(unordered_map<long,long> &prefetchBuffer,long &prefetchHit, 
     }
 }
 
-int handleFIFO(unordered_map<long,long> &cacheBuffer,unordered_map<long,long> &prefetchBuffer,long &cacheHit, long &cacheMiss,long groundItem,long timeStep){
-
-    int triggerPrefetcher=0;
-    if(cacheBuffer.find(groundItem)!=cacheBuffer.end()){
-        cacheHit++;
-    } else {
-        cacheMiss++;
-        triggerPrefetcher=1;
-        if(cacheBuffer.size()<=bufferSize) {
-            cacheBuffer[groundItem] = timeStep;
-        }else{
-            long minTime=indiceNum;
-            long minIndex=0;
-            for(auto it:cacheBuffer){
-                if(it.second<minTime){
-                    minTime=it.second;
-                    minIndex=it.first;
-                }
-            }
-            cacheBuffer.erase(minIndex);
-            cacheBuffer[groundItem]=timeStep;
-        }
-    }
-
-    return triggerPrefetcher;
-}
-
 
 int handleLRU(unordered_map<long,long> &cacheBuffer,unordered_map<long,long> &prefetchBuffer,long &cacheHit, long &cacheMiss,long groundItem,long timeStep){
 
@@ -118,6 +99,7 @@ int handleLRU(unordered_map<long,long> &cacheBuffer,unordered_map<long,long> &pr
         cacheHit++;
         return 0;
     } else {
+	cacheMiss++;
         if(cacheBuffer.size()<=bufferSize) { // if the cache is not full
             cacheBuffer[groundItem] = timeStep;
         }

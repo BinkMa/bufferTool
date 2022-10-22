@@ -17,19 +17,16 @@
 
 #define FastIO ios::sync_with_stdio(false); std::cin.tie(nullptr); std::cout.tie(nullptr);
 #define PrefetchLine 5
-//#define indiceNum (46792035)
-//#define indiceNum (2*1000*1000)
-//#define indiceNum (13)
-#define indiceNum (1000*1000)
-//#define bufferSize 637876 //  for the whole
-//#define bufferSize 4423 //  for the first 100000 lines
-//#define bufferSize (43305) //  for the first 1000000 lines
-// #define CbufferSize (86610) //  for the first 1000000 lines
-// #define PbufferSize (43305) //  for the first 1000000 lines
-#define bufferSize (90947)//this is for test data 1000 000 lines
-//#define bufferSize (70985)  //
+#define indiceNum (4582772)
+
+#define bufferSize 272334
+//#define bufferSize 424333
+//#define bufferSize 424011
+//#define bufferSize 420741
+//#define bufferSize 426738
+//#define bufferSize 428154
+
 //#define bufferSize (205608) //
-//#define bufferSize 10
 using namespace std;
 
 int handleCache(unordered_map<long,long> &cacheBuffer,long &cacheHit, long &cacheMiss,stringstream &cacheS,long groundItem,long timeStep);
